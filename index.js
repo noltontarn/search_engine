@@ -51,18 +51,31 @@ app.get('/', function(req, res){
 app.get('/search', function (req, res){
   // declare the query object to search elastic search and return only 200 results from the first result found. 
   // also match any data where the name is like the query string sent in
+  console.log("q: " + req.query['q'])
+  console.log("platform: " + req.query['platform'])
   let body = {
     size: 200,
     from: 0, 
-    query: {
+    /*query: {
         multi_match: {
             query: req.query['q'],
-            fields: ["name", "country"]
+            fields: ["Name", "Summary"]
         }
+    }*/
+    query: { 
+      bool: { 
+        must: [
+          {  multi_match: {
+            query: req.query['q'],
+            fields: ["Name", "Summary"]
+        }},
+          { match : { Platform: req.query['platform']}}
+        ]
+      }
     }
   }
   // perform the actual search passing in the index, the search query and the type
-  client.search({index:'scotch.io-tutorial',  body:body, type:'cities_list'})
+  client.search({index:'game-review',  body:body, type:'review_list'})
   .then(results => {
     res.send(results.hits.hits);
   })

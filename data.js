@@ -17,7 +17,7 @@ client.ping({
  });
  // create a new index called scotch.io-tutorial. If the index has already been created, this function fails safely
 client.indices.create({
-    index: 'scotch.io-tutorial'
+    index: 'game-review'
 }, function(error, response, status) {
     if (error) {
         console.log(error);
@@ -26,25 +26,25 @@ client.indices.create({
     }
 });
 // require the array of cities that was downloaded
-const cities = require('./cities.json');
+const reviews = require('./reviews.json');
 // declare an empty array called bulk
 var bulk = [];
 //loop through each city and create and push two objects into the array in each loop
 //first object sends the index and type you will be saving the data as
 //second object is the data you want to index
-cities.forEach(city =>{
+reviews.forEach(review =>{
    bulk.push({index:{ 
-                 _index:"scotch.io-tutorial", 
-                 _type:"cities_list",
+                 _index:"game-review", 
+                 _type:"review_list",
              }          
          })
-  bulk.push(city)
+  bulk.push(review)
 })
 //perform bulk indexing of the data passed
 client.bulk({body:bulk}, function( err, response  ){ 
          if( err ){ 
              console.log("Failed Bulk operation".red, err) 
          } else { 
-             console.log("Successfully imported %s".green, cities.length); 
+             console.log("Successfully imported %s".green, reviews.length); 
          } 
 }); 

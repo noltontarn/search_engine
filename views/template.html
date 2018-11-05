@@ -5,7 +5,7 @@
 <div class="container" id="app">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <h1>Search Cities around the world</h1>
+            <h1>Motacritic</h1>
         </div>
     </div>
     <div class="row">
@@ -17,6 +17,30 @@
                     <span class="glyphicon glyphicon-search form-control-feedback"></span>
                 </div>
             </form>
+            <select v-model="selected">
+                <option disabled value="">Please select one</option>
+                <option>PC</option>
+                <option>PlayStation 4</option>
+                <option>PlayStation 3</option>
+                <option>PlayStation 2</option>
+                <option>PlayStation 1</option>
+                <option>PlayStation Vita</option>
+                <option>PSP</option>
+                <option>Xbox One</option>
+                <option>Xbox 360</option>
+                <option>Xbox</option>
+                <option>Switch</option>
+                <option>Wii U</option>
+                <option>Wii</option>
+                <option>Gamecube</option>
+                <option>Nintendo 64</option>
+                <option>3DS</option>
+                <option>DS</option>
+                <option>Game Boy Advance</option>
+                <option>Dreamcast</option>
+                <option>iOS</option>
+            </select>
+            <span>Platform: {{ selected }}</span>
         </div>
     </div>
     <div class="row">
@@ -24,11 +48,11 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                 <!-- display the city name and country  -->
-                    {{ result._source.name }}, {{ result._source.country }} 
+                    {{ result._source.Name }}, {{ result._source.Platform }}, {{ result._source.Source }}
                 </div>
                 <div class="panel-body">
                 <!-- display the latitude and longitude of the city  -->
-                    <p>lat:{{ result._source.lat }}, long: {{ result._source.lng }}.</p>
+                    <p>Score: {{ result._source.Review_score }} Link: {{ result._source.Url }} Review: {{ result._source.Review }}.</p>
                 </div>
             </div>
         </div>
@@ -101,13 +125,14 @@ var app = new Vue({
     // declare the data for the component (An array that houses the results and a query that holds the current search string)
     data: {
         results: [],
-        query: ''
+        query: '',
+        selected: ''
     },
     // declare methods in this Vue component. here only one method which performs the search is defined
     methods: {
         // make an axios request to the server with the current search query
         search: function() {
-            axios.get("http://127.0.0.1:3001/search?q=" + this.query)
+            axios.get("http://127.0.0.1:3001/search?q=" + this.query + "&platform=" + this.selected)
                 .then(response => {
                     this.results = response.data;
 
