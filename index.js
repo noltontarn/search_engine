@@ -65,10 +65,11 @@ app.get('/search', function (req, res){
     query: { 
       bool: { 
         must: [
-          {  multi_match: {
-            query: req.query['q'],
-            fields: ["Name", "Summary"]
-        }},
+          { multi_match: {
+              query: req.query['q'],
+              type: "best_fields",
+              fields: ["Name", "Summary"],
+              tie_breaker: 0.3}},
           { match : { Platform: req.query['platform']}}
         ]
       }
