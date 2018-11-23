@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Motacritic</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="css/swiper.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+    <script src="js/custom.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+    <header class="site-header">
+        <div class="nav-bar">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
+                        <div class="site-branding d-flex align-items-center">
+                          <img class="d-block" src="images/logo.png" alt="logo">
+                        </div><!-- .site-branding -->
+                        <div class="hamburger-menu d-lg-none">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div><!-- .hamburger-menu -->
+                    </div><!-- .col -->
+                </div><!-- .row -->
+            </div><!-- .container -->
+        </div><!-- .nav-bar -->
+
+        <div class="swiper-container hero-slider">
+            <div class="swiper-slide hero-content-wrap" style="background-image: url('images/hero.jpg')">
+                <div class="hero-content-overlay position-absolute w-100 h-100">
+                    <div class="container h-100">
+                        <div class="row h-100">
+                            <div class="col-12 col-lg-6 d-flex flex-column justify-content-center align-items-start">
+                                <header class="entry-header">
+                                    <h1>Search <br>Your games</h1>
+                                </header><!-- .entry-header -->
+                                <div class="entry-content mt-4">
+                                    <p>Search for your favourite games. Acknowledge their details and players opinion. Over thousand reviews from thousand trustworthy critics. </p>
+                                </div><!-- .entry-content -->
+                            </div><!-- .col -->
+                        </div><!-- .row -->
+                    </div><!-- .container -->
+                </div><!-- .hero-content-overlay -->
+            </div><!-- .hero-content-wrap -->
+        </div><!-- .swiper-wrapper -->
+        <div class="homepage-boxes">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="opening-hours">
+                            <h2 class="d-flex align-items-center">Olan SanguanpraSearch</h2>
+                            <ul class="p-0 m-0" id="app">
+                              <div class="row">
+                                  <div class="col-md-6">
+                                    <form action="" class="search-form">
+                                        <div class="form-group has-feedback">
+                                            <label for="search" class="sr-only">Search</label>
+                                            <input type="text" class="form-control" name="search" id="search" placeholder="search" v-model="query" >
+                                            <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                                        </div>
+                                    </form>
+                                  </div>
+                                  <div class="col-md-3">
+                                    <select v-model="selected" style="padding-right: 50px">
+                                        <option disabled value="">Select Platform</option>
+                                        <option>PC</option>
+                                        <option>PlayStation 4</option>
+                                        <option>PlayStation 3</option>
+                                        <option>PlayStation 2</option>
+                                        <option>PlayStation 1</option>
+                                        <option>PlayStation Vita</option>
+                                        <option>PSP</option>
+                                        <option>Xbox One</option>
+                                        <option>Xbox 360</option>
+                                        <option>Xbox</option>
+                                        <option>Switch</option>
+                                        <option>Wii U</option>
+                                        <option>Wii</option>
+                                        <option>GameCube</option>
+                                        <option>Nintendo 64</option>
+                                        <option>3DS</option>
+                                        <option>DS</option>
+                                        <option>Game Boy Advance</option>
+                                        <option>Dreamcast</option>
+                                        <option>iOS</option>
+                                    </select>
+                                  </div>
+                                  <div class="col-md-3">
+                                      <select v-model="selected2" style="padding-right: 75px">
+                                          <option disabled value="">Select Genre</option>
+                                          <option>Action</option>
+                                          <option>General</option>
+                                          <option>Action adventure</option>
+                                          <option>Shooter</option>
+                                          <option>Arcade</option>
+                                          <option>Role-Playing</option>
+                                          <option>First-Person</option>
+                                          <option>Sports</option>
+                                          <option>Miscellaneous</option>
+                                          <option>Sci-Fi</option>
+                                      </select>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12" v-for="result in results">
+                                        <div class="panel panel-default" style="background-color: rgba(255, 179, 179, 0.4)">
+                                            <div class="panel-heading">
+                                            <!-- display the city name and country  -->
+                                                <h6><b>Game:</b> {{ result._source.Name }}</h6>
+                                            </div>
+                                            <div class="panel-body">
+                                            <!-- display the latitude and longitude of the city  -->
+                                                <h6><b>Platform:</b> {{ result._source.Platform }}</h6>
+                                                <h6><b>Source:</b> {{ result._source.Source }}</h6>
+                                                <h6><b>Score:</b> {{ result._source.Review_score }} </h6>
+                                                <h6><b>Review:</b> {{ result._source.Review }} <a :href="result._source.Url" ><b>See More</b></a></h6>
+                                            </div>
+                                        </div>
+                                        <div style="padding: 10px">
+                                          <h6> </h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header><!-- .site-header -->
+    <script type='text/javascript' src='js/jquery.js'></script>
+    <script type='text/javascript' src='js/jquery.collapsible.min.js'></script>
+    <script type='text/javascript' src='js/swiper.min.js'></script>
+    <script type='text/javascript' src='js/jquery.countdown.min.js'></script>
+    <script type='text/javascript' src='js/circle-progress.min.js'></script>
+    <script type='text/javascript' src='js/jquery.countTo.min.js'></script>
+    <script type='text/javascript' src='js/jquery.barfiller.js'></script>
+    <script type='text/javascript' src='js/custom.js'></script>
+    <script>
+    // create a new Vue instance
+    var app = new Vue({
+        el: '#app',
+        // declare the data for the component (An array that houses the results and a query that holds the current search string)
+        data: {
+            results: [],
+            query: '',
+            selected: '',
+            selected2: ''
+        },
+        // declare methods in this Vue component. here only one method which performs the search is defined
+        methods: {
+            // make an axios request to the server with the current search query
+            search: function() {
+                axios.get("http://127.0.0.1:3001/search?q=" + this.query + "&platform=" + this.selected + "&genre=" + this.selected2)
+                    .then(response => {
+                        this.results = response.data;
+
+                    })
+            }
+        },
+        // declare Vue watchers
+        watch: {
+            // watch for change in the query string and recall the search method
+            query: function() {
+                this.search();
+            }
+        }
+
+    })
+    </script>
+</body>
+</html>

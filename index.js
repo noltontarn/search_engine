@@ -26,13 +26,13 @@ client.ping({
  });
 
 
-// use the bodyparser as a middleware  
+// use the bodyparser as a middleware
 app.use(bodyParser.json())
 // set port for the app to listen on
 app.set( 'port', process.env.PORT || 3001 );
 // set path to serve static files
 app.use( express.static( path.join( __dirname, 'public' )));
-// enable CORS 
+// enable CORS
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
@@ -42,35 +42,37 @@ app.use(function(req, res, next) {
 
 // defined the base route and return with an HTML file called tempate.html
 app.get('/', function(req, res){
-  res.sendFile('template.html', {
+  res.sendFile('index.html', {
      root: path.join( __dirname, 'views' )
    });
 })
 
-// define the /search route that should return elastic search results 
+// define the /search route that should return elastic search results
 app.get('/search', function (req, res){
-  // declare the query object to search elastic search and return only 200 results from the first result found. 
+  // declare the query object to search elastic search and return only 200 results from the first result found.
   // also match any data where the name is like the query string sent in
   console.log("q: " + req.query['q'])
   console.log("platform: " + req.query['platform'])
+  console.log("genre: " + req.query['genre'])
   let body = {
     size: 200,
-    from: 0, 
+    from: 0,
     /*query: {
         multi_match: {
             query: req.query['q'],
             fields: ["Name", "Summary"]
         }
     }*/
-    query: { 
-      bool: { 
-        must: [
+    query: {
+      bool: {
+        should: [
           { multi_match: {
               query: req.query['q'],
               type: "best_fields",
               fields: ["Name", "Summary"],
               tie_breaker: 0.3}},
-          { match : { Platform: req.query['platform']}}
+          { match : { Platform: req.query['platform']}},
+          { match : { Genre: req.query['genre']}}
         ]
       }
     }
